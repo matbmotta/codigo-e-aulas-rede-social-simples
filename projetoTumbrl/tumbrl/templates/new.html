@@ -1,0 +1,21 @@
+{% extends "perry.html" %}
+
+{% block body %}
+<form method="POST">
+    {{ form.csrf_token }}
+
+    {{ form.email.label() }}
+    {{ form.email() }}
+
+    {{ form.usarname.label() }}
+    {{ form.usarname() }}
+
+    {{ form.password.label() }}
+    {{ form.password() }}
+
+    {{ form.checkPassword.label() }}
+    {{ form.checkPassword() }}
+
+    {{ form.btn() }}
+</form>
+{% endblock %}
