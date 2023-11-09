@@ -100,21 +100,21 @@ def delete(post_id):
     else:
         return "Post não encontrado"
 
-@app.route('/like/<post_id>', methods=['POST'])
+@app.route('/like_post/<post_id>', methods=['GET'])
 @login_required
 def like_post(post_id):
     post = Posts.query.get(post_id)
     
     if post:
         user_id = current_user.id
-        existing_vote = Posts.query.filter_by(user_id=user_id, post_id=post.id).first()
+        # existing_vote = Posts.query.filter_by(user_id=user_id, id=post.id).first()
         
-        if existing_vote:
-            return "Você já curtiu este post"
+        # if existing_vote:
+        #     return "Você já curtiu este post"
         
         # Se o usuário não curtiu o post anteriormente, criamos um novo registro de voto
-        new_vote = Posts(user_id=user_id, post_id=post.id)
-        database.session.add(new_vote)
+        # new_vote = Posts(user_id=user_id, post_id=post.id)
+        # database.session.add(new_vote)
         
         post.likes += 1
         database.session.commit()

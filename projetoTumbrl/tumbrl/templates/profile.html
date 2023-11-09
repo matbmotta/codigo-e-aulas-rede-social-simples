@@ -1,40 +1,58 @@
 {% extends "perry.html" %}
 
-{% block titulo %}  Perfil do {{ user.username }} {% endblock %}
-
+{% block titulo %}Perfil do {{ user.username }}{% endblock %}
 
 {% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <!-- Perfil do usuário -->
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h3 class="card-title">{{ user.username }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <!-- Caixa de postagem -->
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h2>Postar algo</h2>
+                    {% if form %}
+                        <form method="POST" enctype="multipart/form-data">
+                            {{ form.csrf_token }}
+                            <div class="form-group">
+                                {{ form.text.label(class="form-label") }}
+                                {{ form.text(class="form-control") }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.photo.label(class="form-label") }}
+                                {{ form.photo(class="form-control") }}
+                            </div>
+                            {{ form.btn(class="btn btn-primary") }}
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
 
-    <h1> Faaala {{ user.username }}!</h1>
-    <a href=" {{ url_for('homepage') }} "> HOME </a>
-
-
-    {% if form %}
-        <h2> MEU PERFIL </h2>
-
-        <form method="POST" enctype="multipart/form-data">
-            {{ form.csrf_token }}
-
-            {{ form.text.label() }}
-            {{ form.text() }}
-
-            {{ form.photo.label() }}
-            {{ form.photo() }}
-
-            {{ form.btn() }}
-        </form>
-
-    {% endif %}
-
-    {% for post in user.posts %}
-        <!-- <img src="{{ url_for('static', filename='fotos_dos_posts/default.jpg') }}"> -->
-        <p>{{post.id}}</p>
-        <img class="img-thumbnail rounded" src="{{ url_for('static', filename='fotos_dos_posts/{}'.format(post.post_img)) }}">
-
-        <a href="{{url_for('delete', post_id=post.id)}}">Excluir</a>
-        
-
-    {% endfor %}
-
-
+            <!-- Lista de posts -->
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h2>Posts</h2>
+                    {% for post in user.posts %}
+                        <div class="media mb-4">
+                            <img src="{{ url_for('static', filename='fotos_dos_posts/' ~ post.post_img) }}" class="mr-3" alt="Imagem do post">
+                            <div class="media-body">
+                                <h5 class="mt-0">{{ user.username }}</h5>
+                                <p>{{ post.post_text }}</p>
+                                <a href="{{ url_for('like_post', post_id=post.id) }}" class="btn btn-primary">Like <span>{{ post.likes }}</span></a>
+                                <a href="{{ url_for('delete', post_id=post.id) }}" class="btn btn-danger">Excluir</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
