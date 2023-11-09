@@ -1,21 +1,42 @@
 {% extends "perry.html" %}
 
 {% block body %}
-<form method="POST">
-    {{ form.csrf_token }}
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">Cadastro</div>
+                <div class="card-body">
+                    <form method="POST">
+                        {{ form.csrf_token }}
 
-    {{ form.email.label() }}
-    {{ form.email() }}
+                        <div class="form-group">
+                            {{ form.email.label(class="form-control-label") }}
+                            {{ form.email(class="form-control") }}
+                        </div>
 
-    {{ form.usarname.label() }}
-    {{ form.usarname() }}
+                        <div class="form-group">
+                            {{ form.usarname.label(class="form-control-label") }}
+                            {{ form.usarname(class="form-control") }}
+                        </div>
 
-    {{ form.password.label() }}
-    {{ form.password() }}
+                        <div class="form-group">
+                            {{ form.password.label(class="form-control-label") }}
+                            {{ form.password(class="form-control") }}
+                        </div>
 
-    {{ form.checkPassword.label() }}
-    {{ form.checkPassword() }}
+                        <div class="form-group">
+                            {{ form.checkPassword.label(class="form-control-label") }}
+                            {{ form.checkPassword(class="form-control") }}
+                        </div>
 
-    {{ form.btn() }}
-</form>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">{{ form.btn() }}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

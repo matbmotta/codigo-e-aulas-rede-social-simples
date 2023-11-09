@@ -1,29 +1,36 @@
 {% extends "perry.html" %}
 
-{% block titulo %} HOMMER {% endblock %}
-
+{% block titulo %}HOMMER{% endblock %}
 
 {% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title text-center">Faça login</h2>
+                    {% block formulario %}
+                    <form method="POST">
+                        {{ form.csrf_token }}
 
-    {% block formulario %}
-    <form method="POST">
-        {{ form.csrf_token }}
+                        <div class="form-group">
+                            {{ form.email.label() }}
+                            {{ form.email(class="form-control") }}
+                        </div>
 
-        {{ form.email.label() }}
-        {{ form.email() }}
+                        <div class="form-group">
+                            {{ form.password.label() }}
+                            {{ form.password(class="form-control") }}
+                        </div>
 
-        {{ form.password.label() }}
-        {{ form.password() }}
-
-        {{ form.btn() }}
-    </form>
-    {% endblock %}
-
-
-
-    BOOUA
-
-    {% for i in range(0, 5): %}
-        <h1> {{ textinho }}  </h1>
-    {% endfor %}
+                        <div class="form-group text-center">
+                            {{ form.btn(class="btn btn-primary btn-block") }}
+                        </div>
+                    </form>
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
