@@ -25,3 +25,14 @@ class Posts(database.Model):
     creation_date = database.Column(database.DateTime, nullable=False, default=datetime.utcnow())
     user_id = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
     likes = database.Column(database.Integer, default=0)
+    comments = database.Relationship("Comments", backref='user', lazy=True)
+
+class User_Likes(database.Model):
+    id = database.Column(database.Integer, primary_key=True)
+    user_id = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
+    post_id = database.Column(database.Integer, nullable=False)
+
+class Comments(database.Model):
+    id = database.Column(database.Integer, primary_key=True)
+    post_id = database.Column(database.Integer,database.ForeignKey('posts.id'), nullable=False)
+    commment = database.Column(database.String, default='')

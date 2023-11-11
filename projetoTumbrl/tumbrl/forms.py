@@ -30,4 +30,8 @@ class FormCreateNewAccount(FlaskForm):
 class FormCreateNewPost(FlaskForm):
     text = StringField('PostText', widget=TextArea(), validators=[DataRequired()])
     photo = FileField('Photo', validators=[DataRequired()])
+    comment = StringField('Comment', widget=TextArea())
     btn = SubmitField('Publish')
+
+class FormCreateNewComment(FlaskForm):
+    comment = StringField('Comment', widget=TextArea(), validators=[DataRequired()])

@@ -1,11 +1,11 @@
 # Aqui vão as rotas e os links
 from tumbrl import app
-from flask import render_template, url_for, redirect
+from flask import render_template, url_for, redirect, request
 from flask_login import login_required, login_user, current_user
 from tumbrl.models import load_user
-from tumbrl.forms import FormLogin, FormCreateNewAccount, FormCreateNewPost
+from tumbrl.forms import FormLogin, FormCreateNewAccount, FormCreateNewPost, FormCreateNewComment
 from tumbrl import bcrypt
-from tumbrl.models import User, Posts
+from tumbrl.models import User, Posts, User_Likes, Comments
 from tumbrl import database
 
 import os
@@ -94,6 +94,13 @@ def delete(post_id):
     post = Posts.query.get(post_id)
     user_id = current_user.id
     if post:
+        # Obtém os comentários do post
+        comments = Comments.query.filter_by(post_id=post_id).all()
+
+        # Remove os comentários do banco de dados
+        for comment in comments:
+            database.session.delete(comment)
+
         database.session.delete(post)
         database.session.commit()
         return redirect(url_for('profile', user_id=user_id))
@@ -104,21 +111,47 @@ def delete(post_id):
 @login_required
 def like_post(post_id):
     post = Posts.query.get(post_id)
-    
+
     if post:
         user_id = current_user.id
-        # existing_vote = Posts.query.filter_by(user_id=user_id, id=post.id).first()
-        
-        # if existing_vote:
-        #     return "Você já curtiu este post"
-        
-        # Se o usuário não curtiu o post anteriormente, criamos um novo registro de voto
-        # new_vote = Posts(user_id=user_id, post_id=post.id)
-        # database.session.add(new_vote)
-        
+
+        # Verifica se o usuário já curtiu o post
+        if User_Likes.query.filter_by(user_id=user_id, post_id=post_id).first():
+            return "Você já curtiu este post"
+
+        # Salva o like do usuário no banco de dados
+        like = User_Likes(user_id=user_id, post_id=post_id)
+        database.session.add(like)
+        # Adiciona o like do usuário ao post
         post.likes += 1
         database.session.commit()
-        
+
         return redirect(url_for('profile', user_id=user_id))
     else:
         return "Post não encontrado"
+    
+@app.route('/add_comment/<post_id>', methods=['POST'])
+@login_required
+def add_comment(post_id):
+    user_id = current_user.id
+    _formCreateNewComment = FormCreateNewComment()
+    if int(post_id) != 0:
+        commment = _formCreateNewComment.comment.data
+        # Salva o comentário no banco de dados
+        newComment = Comments(post_id = post_id, commment = commment)
+        database.session.add(newComment)
+        database.session.commit()
+
+        # Retorna o objeto Comment
+        return redirect(url_for('profile', user_id=user_id))
+    else:
+        return "Post não encontrado"
+
+
+
+    # Obtém os comentários do post
+    comments = Comments.query.filter_by(post_id=post_id).all()
+
+    # Remove os comentários do banco de dados
+    for comment in comments:
+        database.session.delete(comment)

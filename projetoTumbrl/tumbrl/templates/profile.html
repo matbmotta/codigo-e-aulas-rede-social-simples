@@ -49,6 +49,21 @@
                                 <a href="{{ url_for('delete', post_id=post.id) }}" class="btn btn-danger">Excluir</a>
                             </div>
                         </div>
+                        {% for comment in post.comments %}
+                            <div class="media mb-4">
+                                <div class="media-body">
+                                    <p>{{ comment.commment }}</p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <form action="{{ url_for('add_comment', post_id=post.id) }}" method="POST" enctype="multipart/form-data">
+                            {{ form.csrf_token }}
+                            <div class="form-group">
+                                <label for="comment">Comentário</label>
+                                {{ form.comment(class="form-control") }}
+                            </div>
+                            <button type="submit" class="btn btn-primary">Enviar</button>
+                        </form>
                     {% endfor %}
                 </div>
             </div>
