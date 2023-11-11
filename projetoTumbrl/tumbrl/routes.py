@@ -147,11 +147,3 @@ def add_comment(post_id):
     else:
         return "Post não encontrado"
 
-
-
-    # Obtém os comentários do post
-    comments = Comments.query.filter_by(post_id=post_id).all()
-
-    # Remove os comentários do banco de dados
-    for comment in comments:
-        database.session.delete(comment)
