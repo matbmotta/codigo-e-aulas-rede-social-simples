@@ -97,9 +97,15 @@ def delete(post_id):
         # Obtém os comentários do post
         comments = Comments.query.filter_by(post_id=post_id).all()
 
+        # Obtém os likes do post
+        likes = User_Likes.query.filter_by(post_id=post_id).all()
+
         # Remove os comentários do banco de dados
         for comment in comments:
             database.session.delete(comment)
+
+        for like in likes:
+            database.session.delete(like)
 
         database.session.delete(post)
         database.session.commit()
