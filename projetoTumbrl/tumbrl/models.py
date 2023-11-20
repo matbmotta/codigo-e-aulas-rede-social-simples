@@ -32,6 +32,23 @@ class User_Likes(database.Model):
     user_id = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
     post_id = database.Column(database.Integer, nullable=False)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
 class Comments(database.Model):
     id = database.Column(database.Integer, primary_key=True)
     post_id = database.Column(database.Integer,database.ForeignKey('posts.id'), nullable=False)

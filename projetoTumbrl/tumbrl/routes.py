@@ -136,6 +136,31 @@ def like_post(post_id):
     else:
         return "Post não encontrado"
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
 @app.route('/add_comment/<post_id>', methods=['POST'])
 @login_required
 def add_comment(post_id):
